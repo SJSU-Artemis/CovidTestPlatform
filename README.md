@@ -1,5 +1,4 @@
 # CovidTestPlatform
-Platform connecting patients with COVID-19 test centers
 
 Problem Statement:
 
