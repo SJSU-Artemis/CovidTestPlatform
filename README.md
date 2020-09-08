@@ -15,6 +15,7 @@ Physicians – Who will be responsible for uploading the test results.
 End Users – Who will have to create a profile and schedule an appointment with the nearest test center shown in the result based on their zip code.
 
 Following are the capabilities that we are planning to have in our platform:
+
 •	SSO based authentication for users
 •	Active Directory Authentication for enterprise users (Admins and Physicians) with role-based permissions
 •	Efficient data storage of medical documents in AWS S3 bucket
