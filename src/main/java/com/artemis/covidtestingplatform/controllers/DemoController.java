@@ -23,10 +23,10 @@ public class DemoController {
         return geoCodeService.getCoordinatesForAddress(city);
     }
 
-    @GetMapping("/enum")
-    public TimeSlot getEnum(){
-        return TimeSlot.valueOf(2);
-    }
+//    @GetMapping("/enum")
+//    public TimeSlot getEnum(){
+//        return TimeSlot.valueOf(2);
+//    }
 
     @GetMapping("/enum/num")
     public int getNum(){
