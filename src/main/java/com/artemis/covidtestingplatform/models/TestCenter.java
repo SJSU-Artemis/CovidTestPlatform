@@ -26,6 +26,7 @@ public class TestCenter {
     private String zip;
     private String city;
     private String state;
+    private String phone;
 //    @JsonSerialize(using = GeometrySerializer.class)
 //    @JsonDeserialize(contentUsing = GeometryDeserializer.class)
     @Column(name = "location")

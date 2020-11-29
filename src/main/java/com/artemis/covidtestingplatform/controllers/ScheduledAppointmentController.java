@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/{testCenterAvailabilityId}/schedule-appointment")
+@CrossOrigin
 public class ScheduledAppointmentController {
     @Autowired
     ScheduledAppointmentService scheduledAppointmentService;

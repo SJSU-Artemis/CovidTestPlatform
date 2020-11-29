@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -46,5 +47,9 @@ public class TestCenterService {
 
     public TestCenter get(String centerId){
         return testCenterRepository.findById(centerId).get();
+    }
+
+    public List<TestCenter> getAll(){
+        return testCenterRepository.findAll();
     }
 }

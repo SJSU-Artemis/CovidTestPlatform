@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/testcenter")
+@RequestMapping("/api/testcenter-availability")
+@CrossOrigin
 public class TestCenterAvailabilityController {
     @Autowired
     TestCenterAvailabilityService testCenterAvailabilityService;

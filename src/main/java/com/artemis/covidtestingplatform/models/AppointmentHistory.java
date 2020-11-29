@@ -5,9 +5,11 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.Id;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -16,11 +18,10 @@ public class AppointmentHistory {
     @Id
     private String appointmentHistoryId;
     private String physicianId;
-    @OneToMany
-    private List<MedicalReport> reportList;
     private boolean followUpNeeded;
     private Date appointmentDate;
     private TimeSlot slot;
+    private String testCenterId;
     @Column(updatable = false)
     @CreatedDate
     private Date createdAt;

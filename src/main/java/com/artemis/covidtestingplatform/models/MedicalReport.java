@@ -16,6 +16,8 @@ public class MedicalReport {
     private String id;
     private String result;
     private String reportUrl;
+    @ManyToOne
+    AppointmentHistory appointmentHistory;
     @OneToOne
     private Patient patient;
     @OneToOne
