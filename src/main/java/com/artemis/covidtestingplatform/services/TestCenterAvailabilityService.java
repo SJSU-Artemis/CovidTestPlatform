@@ -47,6 +47,6 @@ public class TestCenterAvailabilityService {
     }
 
     public TestCenterAvailability get(String id){
-        return testCenterAvailabilityRepository.findById(id).get();
+        return testCenterAvailabilityRepository.findByTestCenter_TestCentreId(id);
     }
 }
