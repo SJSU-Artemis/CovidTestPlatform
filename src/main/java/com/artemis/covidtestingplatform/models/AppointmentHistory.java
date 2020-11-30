@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -19,9 +20,10 @@ public class AppointmentHistory {
     private String appointmentHistoryId;
     private String physicianId;
     private boolean followUpNeeded;
-    private Date appointmentDate;
-    private TimeSlot slot;
+    private LocalDate appointmentDate;
+    private String time;
     private String testCenterId;
+    private String patientId;
     @Column(updatable = false)
     @CreatedDate
     private Date createdAt;

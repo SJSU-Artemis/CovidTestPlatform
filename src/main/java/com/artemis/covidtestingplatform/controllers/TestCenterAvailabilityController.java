@@ -4,7 +4,12 @@ import com.artemis.covidtestingplatform.models.TestCenter;
 import com.artemis.covidtestingplatform.models.TestCenterAvailability;
 import com.artemis.covidtestingplatform.services.TestCenterAvailabilityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/testcenter-availability")
@@ -19,7 +24,12 @@ public class TestCenterAvailabilityController {
     }
 
     @GetMapping("/{id}")
-    public TestCenterAvailability get(@PathVariable String id){
-        return testCenterAvailabilityService.get(id);
+    public TestCenterAvailability get(@PathVariable String id, @RequestParam("localDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day){
+        return testCenterAvailabilityService.get(id,day);
+    }
+
+    @GetMapping("/nextWeekAvailability")
+    public Iterable<TestCenterAvailability> getNext7Days() {
+        return testCenterAvailabilityService.getAvailabilityForNext7Days();
     }
 }

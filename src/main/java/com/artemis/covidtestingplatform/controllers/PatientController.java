@@ -1,7 +1,10 @@
 package com.artemis.covidtestingplatform.controllers;
 
+import com.artemis.covidtestingplatform.models.AppointmentHistory;
 import com.artemis.covidtestingplatform.models.Patient;
+import com.artemis.covidtestingplatform.models.ScheduledAppointment;
 import com.artemis.covidtestingplatform.models.TestCenter;
+import com.artemis.covidtestingplatform.services.AppointmentHistoryService;
 import com.artemis.covidtestingplatform.services.GeoCodeService;
 import com.artemis.covidtestingplatform.services.PatientService;
 import com.artemis.covidtestingplatform.services.ScheduledAppointmentService;
@@ -22,6 +25,8 @@ public class PatientController {
     GeoCodeService geoCodeService;
     @Autowired
     ScheduledAppointmentService scheduledAppointmentService;
+    @Autowired
+    AppointmentHistoryService appointmentHistoryService;
 
     @PostMapping
     public Patient save(@RequestBody Patient patient){
@@ -41,4 +46,13 @@ public class PatientController {
         scheduledAppointmentService.delete(scheduledId);
     }
 
+    @GetMapping("/{id}/scheduled-appointments")
+    public Iterable<ScheduledAppointment> getScheduledAppointments(@PathVariable String id){
+        return scheduledAppointmentService.getScheduledAppointments(id);
+    }
+
+    @GetMapping("/{id}/appointment-history")
+    public Iterable<AppointmentHistory> getHistory(@PathVariable String id){
+        return appointmentHistoryService.getAll(id);
+    }
 }
