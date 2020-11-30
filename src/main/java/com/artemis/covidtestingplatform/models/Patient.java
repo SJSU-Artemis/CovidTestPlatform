@@ -27,6 +27,7 @@ public class Patient {
     private String city;
     private String state;
     private String insuranceProvider;
+    private String phoneNumber;
     @OneToMany
     private List<AppointmentHistory> appointmentHistories;
     @Column(updatable = false)

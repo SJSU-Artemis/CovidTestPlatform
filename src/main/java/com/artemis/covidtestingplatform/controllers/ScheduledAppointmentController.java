@@ -2,6 +2,7 @@ package com.artemis.covidtestingplatform.controllers;
 
 import com.artemis.covidtestingplatform.models.ScheduledAppointment;
 import com.artemis.covidtestingplatform.services.ScheduledAppointmentService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ public class ScheduledAppointmentController {
     ScheduledAppointmentService scheduledAppointmentService;
 
     @PostMapping
-    public ScheduledAppointment save(@PathVariable String testCenterAvailabilityId, @RequestBody ScheduledAppointment scheduledAppointment){
+    public ScheduledAppointment save(@PathVariable String testCenterAvailabilityId, @RequestBody ScheduledAppointment scheduledAppointment) throws JsonProcessingException {
         return scheduledAppointmentService.save(scheduledAppointment, testCenterAvailabilityId);
     }
 
