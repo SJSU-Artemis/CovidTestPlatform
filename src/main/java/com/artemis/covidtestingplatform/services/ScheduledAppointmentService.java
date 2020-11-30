@@ -8,6 +8,7 @@ import com.artemis.covidtestingplatform.repositories.AppointmentHistoryRepositor
 import com.artemis.covidtestingplatform.repositories.AvailableAppointmentRepository;
 import com.artemis.covidtestingplatform.repositories.ScheduledAppointmentRepository;
 import com.artemis.covidtestingplatform.repositories.TestCenterAvailabilityRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +25,11 @@ public class ScheduledAppointmentService {
     TestCenterAvailabilityRepository testCenterAvailabilityRepository;
     @Autowired
     AppointmentHistoryRepository appointmentHistoryRepository;
+    @Autowired
+    PublisherService publisherService;
 
     @Transactional
-    public ScheduledAppointment save(ScheduledAppointment scheduledAppointment, String testCenterAvailabilityId){
+    public ScheduledAppointment save(ScheduledAppointment scheduledAppointment, String testCenterAvailabilityId) throws JsonProcessingException {
         scheduledAppointment.setScheduledAppointmentsId(UUID.randomUUID().toString());
         AvailableAppointment availableAppointment = availableAppointmentRepository.findById(scheduledAppointment.getAvailableAppointmentsId()).get();
         int slotBalance = availableAppointment.getAppointmentCount()-1;
@@ -38,7 +41,9 @@ public class ScheduledAppointmentService {
         testCenterAvailability.setAvailableCount(dayBalance);
         testCenterAvailabilityRepository.save(testCenterAvailability);
         availableAppointmentRepository.save(availableAppointment);
-        return scheduledAppointmentRepository.save(scheduledAppointment);
+        scheduledAppointment = scheduledAppointmentRepository.save(scheduledAppointment);
+        publisherService.publishScheduledAppointmentEvent(scheduledAppointment);
+        return scheduledAppointment;
     }
 
     public ScheduledAppointment get(String id){
