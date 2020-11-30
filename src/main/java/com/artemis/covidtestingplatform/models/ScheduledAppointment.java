@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,8 @@ public class ScheduledAppointment {
     private String scheduledAppointmentsId;
     private String patientId;
     private String testCentreAvailabilityId;
-    private String appointmentDate;
+    private LocalDate appointmentDate;
+    private String time;
     private boolean checkedIn;
     private boolean deleteFlag=false;
     private String availableAppointmentsId;

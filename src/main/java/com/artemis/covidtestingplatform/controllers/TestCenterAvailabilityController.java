@@ -27,4 +27,9 @@ public class TestCenterAvailabilityController {
     public TestCenterAvailability get(@PathVariable String id, @RequestParam("localDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate day){
         return testCenterAvailabilityService.get(id,day);
     }
+
+    @GetMapping("/nextWeekAvailability")
+    public Iterable<TestCenterAvailability> getNext7Days() {
+        return testCenterAvailabilityService.getAvailabilityForNext7Days();
+    }
 }

@@ -21,4 +21,9 @@ public class ScheduledAppointmentController {
     public ScheduledAppointment get(@PathVariable String id){
         return scheduledAppointmentService.get(id);
     }
+
+    @PutMapping("/{id}")
+    public ScheduledAppointment put(@RequestBody ScheduledAppointment appointment){
+        return scheduledAppointmentService.update(appointment);
+    }
 }

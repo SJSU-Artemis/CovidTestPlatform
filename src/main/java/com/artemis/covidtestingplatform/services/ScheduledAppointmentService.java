@@ -1,8 +1,10 @@
 package com.artemis.covidtestingplatform.services;
 
+import com.artemis.covidtestingplatform.models.AppointmentHistory;
 import com.artemis.covidtestingplatform.models.AvailableAppointment;
 import com.artemis.covidtestingplatform.models.ScheduledAppointment;
 import com.artemis.covidtestingplatform.models.TestCenterAvailability;
+import com.artemis.covidtestingplatform.repositories.AppointmentHistoryRepository;
 import com.artemis.covidtestingplatform.repositories.AvailableAppointmentRepository;
 import com.artemis.covidtestingplatform.repositories.ScheduledAppointmentRepository;
 import com.artemis.covidtestingplatform.repositories.TestCenterAvailabilityRepository;
@@ -20,6 +22,8 @@ public class ScheduledAppointmentService {
     AvailableAppointmentRepository availableAppointmentRepository;
     @Autowired
     TestCenterAvailabilityRepository testCenterAvailabilityRepository;
+    @Autowired
+    AppointmentHistoryRepository appointmentHistoryRepository;
 
     @Transactional
     public ScheduledAppointment save(ScheduledAppointment scheduledAppointment, String testCenterAvailabilityId){
@@ -29,6 +33,8 @@ public class ScheduledAppointmentService {
         availableAppointment.setAppointmentCount(slotBalance);
         TestCenterAvailability testCenterAvailability = testCenterAvailabilityRepository.findById(testCenterAvailabilityId).get();
         int dayBalance = testCenterAvailability.getAvailableCount()-1;
+        scheduledAppointment.setTestCentreAvailabilityId(testCenterAvailabilityId);
+        scheduledAppointment.setAppointmentDate(testCenterAvailability.getDay());
         testCenterAvailability.setAvailableCount(dayBalance);
         testCenterAvailabilityRepository.save(testCenterAvailability);
         availableAppointmentRepository.save(availableAppointment);
@@ -49,5 +55,24 @@ public class ScheduledAppointmentService {
         testCenterAvailabilityRepository.save(testCenterAvailability);
         scheduledAppointment.setDeleteFlag(true);
         scheduledAppointmentRepository.save(scheduledAppointment);
+    }
+
+    public Iterable<ScheduledAppointment> getScheduledAppointments(String patientId){
+        return scheduledAppointmentRepository.findAllByPatientIdAndCheckedInEquals(patientId,false);
+    }
+
+    @Transactional
+    public ScheduledAppointment update(ScheduledAppointment appointment) {
+        AppointmentHistory history = new AppointmentHistory();
+        history.setPatientId(appointment.getPatientId());
+        history.setAppointmentHistoryId(UUID.randomUUID().toString());
+        history.setAppointmentDate(appointment.getAppointmentDate());
+        history.setFollowUpNeeded(false);
+        history.setPhysicianId(null);
+        history.setTime(appointment.getTime());
+        String testCenterId = testCenterAvailabilityRepository.findById(appointment.getTestCentreAvailabilityId()).get().getTestCenter().getTestCentreId();
+        history.setTestCenterId(testCenterId);
+        appointmentHistoryRepository.save(history);
+        return scheduledAppointmentRepository.save(appointment);
     }
 }

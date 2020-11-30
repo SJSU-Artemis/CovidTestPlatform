@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,5 +50,9 @@ public class TestCenterAvailabilityService {
 
     public TestCenterAvailability get(String id, LocalDate day){
         return testCenterAvailabilityRepository.findByTestCenter_TestCentreIdAndDay(id,day);
+    }
+
+    public Iterable<TestCenterAvailability> getAvailabilityForNext7Days() {
+        return testCenterAvailabilityRepository.findAllByDayBetween(LocalDate.now(), LocalDate.now().plusDays(7));
     }
 }
