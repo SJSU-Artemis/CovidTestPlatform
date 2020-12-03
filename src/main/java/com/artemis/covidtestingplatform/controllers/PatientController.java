@@ -4,6 +4,7 @@ import com.artemis.covidtestingplatform.models.*;
 import com.artemis.covidtestingplatform.services.*;
 import com.google.maps.errors.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class PatientController {
     }
 
     @GetMapping("/{patientId}/report")
-    public Iterable<MedicalReport> getReportsOnDate(@PathVariable String patientId, @RequestParam LocalDate date){
+    public Iterable<MedicalReport> getReportsOnDate(@PathVariable String patientId, @RequestParam("localDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
         return medicalReportService.getReportsOnDate(patientId,date);
     }
 }

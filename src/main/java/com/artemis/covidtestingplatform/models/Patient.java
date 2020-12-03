@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Patient {
     private String lastName;
     private String email;
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private Date dob;
+    private LocalDate dob;
     private String gender;
     private String address1;
     private String address2;
