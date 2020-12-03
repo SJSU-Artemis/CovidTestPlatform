@@ -21,7 +21,7 @@ public class Patient {
     private String lastName;
     private String email;
     @JsonFormat(pattern = "yyyy-mm-dd")
-    private LocalDate dob;
+    private Date dob;
     private String gender;
     private String address1;
     private String address2;
