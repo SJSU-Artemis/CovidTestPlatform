@@ -1,0 +1,28 @@
+package com.artemis.covidtestingplatform.controllers;
+
+import com.artemis.covidtestingplatform.models.MedicalReport;
+import com.artemis.covidtestingplatform.services.MedicalReportService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/medical-report")
+@CrossOrigin
+public class MedicalReportController {
+    @Autowired
+    MedicalReportService medicalReportService;
+
+    @PostMapping
+    public MedicalReport save(@RequestBody MedicalReport medicalReport) throws JsonProcessingException {
+        return medicalReportService.save(medicalReport);
+    }
+
+    @PostMapping("/upload")
+    public List<String> saveFile(@RequestPart(value="file") MultipartFile[] files){
+        return medicalReportService.saveFile(files);
+    }
+}
