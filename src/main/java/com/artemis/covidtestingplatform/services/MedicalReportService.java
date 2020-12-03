@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,5 +50,9 @@ public class MedicalReportService {
         medicalReport.setId(UUID.randomUUID().toString());
         publisherService.publishReportEvent(patient);
         return medicalReportRepository.save(medicalReport);
+    }
+
+    public Iterable<MedicalReport> getReportsOnDate(String patientId, LocalDate date){
+        return medicalReportRepository.findAllByPatient_PatientIdAndAndAppointmentHistory_AppointmentDate(patientId,date);
     }
 }
