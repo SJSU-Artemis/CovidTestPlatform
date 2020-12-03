@@ -46,9 +46,13 @@ public class MedicalReportService {
         TestCenter testCenter = testCenterRepository.findById(medicalReport.getTestCenter().getTestCentreId()).get();
         medicalReport.setTestCenter(testCenter);
         AppointmentHistory appointmentHistory = appointmentHistoryRepository.findById(medicalReport.getAppointmentHistory().getAppointmentHistoryId()).get();
+        appointmentHistory.setDocumentUploaded(true);
+        appointmentHistory.setFollowUpNeeded(medicalReport.getAppointmentHistory().isFollowUpNeeded());
+        appointmentHistory.setPhysicianId(physician.getPhysicianId());
         medicalReport.setAppointmentHistory(appointmentHistory);
         medicalReport.setId(UUID.randomUUID().toString());
         publisherService.publishReportEvent(patient);
+        appointmentHistoryRepository.save(appointmentHistory);
         return medicalReportRepository.save(medicalReport);
     }
 

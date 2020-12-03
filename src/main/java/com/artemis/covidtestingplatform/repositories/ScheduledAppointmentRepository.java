@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ScheduledAppointmentRepository extends CrudRepository<ScheduledAppointment,String> {
-    Iterable<ScheduledAppointment> findAllByPatientIdAndCheckedInEquals(String patientId, boolean checkedIn);
+    Iterable<ScheduledAppointment> findAllByPatientIdAndCheckedInEqualsAndDeleteFlagEquals(String patientId, boolean checkedIn,boolean deleteFlag);
 }

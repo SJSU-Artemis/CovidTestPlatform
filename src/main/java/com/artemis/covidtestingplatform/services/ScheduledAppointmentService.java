@@ -59,7 +59,7 @@ public class ScheduledAppointmentService {
     }
 
     public Iterable<ScheduledAppointment> getScheduledAppointments(String patientId){
-        return scheduledAppointmentRepository.findAllByPatientIdAndCheckedInEquals(patientId,false);
+        return scheduledAppointmentRepository.findAllByPatientIdAndCheckedInEqualsAndDeleteFlagEquals(patientId,false,false);
     }
 
     @Transactional

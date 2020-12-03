@@ -39,7 +39,7 @@ public class PatientController {
         return patientService.findNearestTestCenter(userLongitude,userLatitude);
     }
 
-    @DeleteMapping("/{scheduledId}")
+    @DeleteMapping("/appointment/{scheduledId}")
     public void delete(@PathVariable String scheduledId){
         scheduledAppointmentService.delete(scheduledId);
     }
