@@ -1,18 +1,13 @@
 package com.artemis.covidtestingplatform.controllers;
 
-import com.artemis.covidtestingplatform.models.AppointmentHistory;
-import com.artemis.covidtestingplatform.models.Patient;
-import com.artemis.covidtestingplatform.models.ScheduledAppointment;
-import com.artemis.covidtestingplatform.models.TestCenter;
-import com.artemis.covidtestingplatform.services.AppointmentHistoryService;
-import com.artemis.covidtestingplatform.services.GeoCodeService;
-import com.artemis.covidtestingplatform.services.PatientService;
-import com.artemis.covidtestingplatform.services.ScheduledAppointmentService;
+import com.artemis.covidtestingplatform.models.*;
+import com.artemis.covidtestingplatform.services.*;
 import com.google.maps.errors.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -27,6 +22,8 @@ public class PatientController {
     ScheduledAppointmentService scheduledAppointmentService;
     @Autowired
     AppointmentHistoryService appointmentHistoryService;
+    @Autowired
+    MedicalReportService medicalReportService;
 
     @PostMapping
     public Patient save(@RequestBody Patient patient){
@@ -59,5 +56,10 @@ public class PatientController {
     @GetMapping("/{patientId}")
     public Patient get(@PathVariable String patientId){
         return patientService.get(patientId);
+    }
+
+    @GetMapping("/{patientId}/report")
+    public Iterable<MedicalReport> getReportsOnDate(@PathVariable String patientId, @RequestParam LocalDate date){
+        return medicalReportService.getReportsOnDate(patientId,date);
     }
 }

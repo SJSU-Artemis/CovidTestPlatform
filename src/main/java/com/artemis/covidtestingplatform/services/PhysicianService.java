@@ -17,8 +17,10 @@ public class PhysicianService {
     TestCenterRepository testCenterRepository;
 
     public Physician save(Physician physician){
-        TestCenter testCenter = testCenterRepository.findById(physician.getTestCenter().getTestCentreId()).get();
-        physician.setTestCenter(testCenter);
+        if(physician.getTestCenter() != null) {
+            TestCenter testCenter = testCenterRepository.findById(physician.getTestCenter().getTestCentreId()).get();
+            physician.setTestCenter(testCenter);
+        }
         return physicianRepository.save(physician);
     }
 
