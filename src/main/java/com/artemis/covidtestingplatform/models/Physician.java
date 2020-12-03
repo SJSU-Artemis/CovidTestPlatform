@@ -22,7 +22,7 @@ public class Physician {
     private String zip;
     private String city;
     private String state;
-    private String password;
+    private String phoneNumber;
     @OneToOne
     private TestCenter testCenter;
     @Column(updatable = false)

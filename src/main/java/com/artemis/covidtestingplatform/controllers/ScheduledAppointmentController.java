@@ -25,6 +25,6 @@ public class ScheduledAppointmentController {
 
     @PutMapping("/{id}")
     public ScheduledAppointment put(@RequestBody ScheduledAppointment appointment){
-        return scheduledAppointmentService.update(appointment);
+        return scheduledAppointmentService.save(appointment);
     }
 }

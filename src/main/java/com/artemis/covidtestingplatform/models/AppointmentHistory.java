@@ -5,10 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -23,7 +20,9 @@ public class AppointmentHistory {
     private LocalDate appointmentDate;
     private String time;
     private String testCenterId;
-    private String patientId;
+    private boolean documentUploaded=false;
+    @OneToOne
+    private Patient patient;
     @Column(updatable = false)
     @CreatedDate
     private Date createdAt;

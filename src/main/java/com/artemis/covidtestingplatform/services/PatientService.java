@@ -27,5 +27,8 @@ public class PatientService {
         return testCenterRepository.findAllHospitalsByDistanceFromUser(userLongitude,userLatitude);
     }
 
+    public Patient get(String patientId){
+        return patientRepository.findById(patientId).get();
+    }
 
 }

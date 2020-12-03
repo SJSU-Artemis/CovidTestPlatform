@@ -19,7 +19,10 @@ public class PhysicianService {
     public Physician save(Physician physician){
         TestCenter testCenter = testCenterRepository.findById(physician.getTestCenter().getTestCentreId()).get();
         physician.setTestCenter(testCenter);
-        physician.setPhysicianId(UUID.randomUUID().toString());
         return physicianRepository.save(physician);
+    }
+
+    public Physician get(String id){
+        return physicianRepository.findById(id).get();
     }
 }

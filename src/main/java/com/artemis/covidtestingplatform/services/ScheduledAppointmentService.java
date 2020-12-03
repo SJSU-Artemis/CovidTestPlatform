@@ -1,13 +1,7 @@
 package com.artemis.covidtestingplatform.services;
 
-import com.artemis.covidtestingplatform.models.AppointmentHistory;
-import com.artemis.covidtestingplatform.models.AvailableAppointment;
-import com.artemis.covidtestingplatform.models.ScheduledAppointment;
-import com.artemis.covidtestingplatform.models.TestCenterAvailability;
-import com.artemis.covidtestingplatform.repositories.AppointmentHistoryRepository;
-import com.artemis.covidtestingplatform.repositories.AvailableAppointmentRepository;
-import com.artemis.covidtestingplatform.repositories.ScheduledAppointmentRepository;
-import com.artemis.covidtestingplatform.repositories.TestCenterAvailabilityRepository;
+import com.artemis.covidtestingplatform.models.*;
+import com.artemis.covidtestingplatform.repositories.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +21,8 @@ public class ScheduledAppointmentService {
     AppointmentHistoryRepository appointmentHistoryRepository;
     @Autowired
     PublisherService publisherService;
+    @Autowired
+    PatientRepository patientRepository;
 
     @Transactional
     public ScheduledAppointment save(ScheduledAppointment scheduledAppointment, String testCenterAvailabilityId) throws JsonProcessingException {
@@ -67,14 +63,15 @@ public class ScheduledAppointmentService {
     }
 
     @Transactional
-    public ScheduledAppointment update(ScheduledAppointment appointment) {
+    public ScheduledAppointment save(ScheduledAppointment appointment) {
         AppointmentHistory history = new AppointmentHistory();
-        history.setPatientId(appointment.getPatientId());
         history.setAppointmentHistoryId(UUID.randomUUID().toString());
         history.setAppointmentDate(appointment.getAppointmentDate());
         history.setFollowUpNeeded(false);
         history.setPhysicianId(null);
         history.setTime(appointment.getTime());
+        Patient patient = patientRepository.findById(appointment.getPatientId()).get();
+        history.setPatient(patient);
         String testCenterId = testCenterAvailabilityRepository.findById(appointment.getTestCentreAvailabilityId()).get().getTestCenter().getTestCentreId();
         history.setTestCenterId(testCenterId);
         appointmentHistoryRepository.save(history);

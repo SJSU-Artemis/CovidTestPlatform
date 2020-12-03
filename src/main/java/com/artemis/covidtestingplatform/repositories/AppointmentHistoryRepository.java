@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AppointmentHistoryRepository extends CrudRepository<AppointmentHistory,String> {
-    Iterable<AppointmentHistory> findAllByPatientId(String patientId);
+    Iterable<AppointmentHistory> findAllByPatient_PatientId(String patientId);
+
+    Iterable<AppointmentHistory> findAllByTestCenterIdAndDocumentUploadedEquals(String testCenterId, boolean documentUploaded);
 }

@@ -55,4 +55,9 @@ public class PatientController {
     public Iterable<AppointmentHistory> getHistory(@PathVariable String id){
         return appointmentHistoryService.getAll(id);
     }
+
+    @GetMapping("/{patientId}")
+    public Patient get(@PathVariable String patientId){
+        return patientService.get(patientId);
+    }
 }

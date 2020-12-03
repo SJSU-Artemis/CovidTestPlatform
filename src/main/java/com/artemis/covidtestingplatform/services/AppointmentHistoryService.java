@@ -11,6 +11,10 @@ public class AppointmentHistoryService {
     AppointmentHistoryRepository appointmentHistoryRepository;
 
     public Iterable<AppointmentHistory> getAll(String patientId){
-        return appointmentHistoryRepository.findAllByPatientId(patientId);
+        return appointmentHistoryRepository.findAllByPatient_PatientId(patientId);
+    }
+
+    public Iterable<AppointmentHistory> findAppointmentsWithNoReport(String testCenterId){
+        return appointmentHistoryRepository.findAllByTestCenterIdAndDocumentUploadedEquals(testCenterId,false);
     }
 }
