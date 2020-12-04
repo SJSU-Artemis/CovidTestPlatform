@@ -53,7 +53,9 @@ public class MedicalReportService {
         medicalReport.setId(UUID.randomUUID().toString());
         publisherService.publishReportEvent(patient);
         appointmentHistoryRepository.save(appointmentHistory);
-        return medicalReportRepository.save(medicalReport);
+        MedicalReport medicalReport1 = medicalReportRepository.save(medicalReport);
+        publisherService.publishReportForAnalyticsEvent(medicalReport1);
+        return medicalReport1;
     }
 
     public Iterable<MedicalReport> getReportsOnDate(String patientId, LocalDate date){
