@@ -6,6 +6,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
 import com.artemis.covidtestingplatform.models.*;
+import com.artemis.covidtestingplatform.repositories.AppointmentHistoryRepository;
 import com.artemis.covidtestingplatform.repositories.PatientRepository;
 import com.artemis.covidtestingplatform.repositories.TestCenterAvailabilityRepository;
 import com.artemis.covidtestingplatform.repositories.TestCenterRepository;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.*;
+import java.util.Date;
 
 @Component
 public class PublisherService {
@@ -27,6 +30,9 @@ public class PublisherService {
 
     @Value("${amazon.reports.notification.sns.topic}")
     private String reportNotificationSnsTopicArn;
+
+    @Value("${amazon.reports.analytics.sns.topic}")
+    private String reportAnalyticsSnsTopicArn;
 
     @Value("${medispot.publisher.key}")
     public String key;
@@ -42,6 +48,9 @@ public class PublisherService {
 
     @Autowired
     TestCenterAvailabilityRepository testCenterAvailabilityRepository;
+
+    @Autowired
+    AppointmentHistoryRepository appointmentHistoryRepository;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -102,6 +111,36 @@ public class PublisherService {
         patientDTO.setEmail(patient.getEmail());
         patientDTO.setPhoneNumber(patient.getPhoneNumber());
         return patientDTO;
+    }
+
+    public void publishReportForAnalyticsEvent(MedicalReport medicalReport) throws JsonProcessingException {
+        String jsonPayload = objectMapper.writeValueAsString(toMedicalReportDTO(medicalReport));
+        amazonSNS.publish(reportAnalyticsSnsTopicArn,jsonPayload);
+    }
+
+    private MedicalReportDTO toMedicalReportDTO(MedicalReport medicalReport){
+        MedicalReportDTO medicalReportDTO = new MedicalReportDTO();
+        Date input = medicalReport.getPatient().getDob();
+        LocalDate date = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate now = LocalDate.now();
+        Period diff = Period.between(date, now);
+        int age = diff.getYears();
+        medicalReportDTO.setPatientAge(age);
+        medicalReportDTO.setResult(medicalReport.getResult());
+        AppointmentHistory appointmentHistory = appointmentHistoryRepository.findById(medicalReport.getAppointmentHistory().getAppointmentHistoryId()).get();
+        medicalReportDTO.setAppointmentDate(appointmentHistory.getAppointmentDate());
+        medicalReportDTO.setTime(appointmentHistory.getTime());
+        Patient patient = patientRepository.findById(medicalReport.getPatient().getPatientId()).get();
+        medicalReportDTO.setPatientGender(patient.getGender());
+        TestCenter testCenter = testCenterRepository.findById(medicalReport.getTestCenter().getTestCentreId()).get();
+        medicalReportDTO.setTestCenterName(testCenter.getName());
+        medicalReportDTO.setTestCenterAddress1(testCenter.getAddress1());
+        medicalReportDTO.setTestCenterAddress2(testCenter.getAddress2());
+        medicalReportDTO.setTestCenterZip(testCenter.getZip());
+        medicalReportDTO.setTestCenterCity(testCenter.getCity());
+        medicalReportDTO.setTestCenterState(testCenter.getState());
+        medicalReportDTO.setId(medicalReport.getId());
+        return medicalReportDTO;
     }
 }
 
